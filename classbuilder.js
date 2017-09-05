@@ -35,7 +35,7 @@ var checkArgs = function (typeArr, argNameArr, args) {
     }
     for (var i = 0; i < typeArr.length; i++) {
         var expectedType = typeArr[i];
-        var gotType = args[i];
+        var gotType = typeof args[i];
         if (expectedType !== null && expectedType !== gotType) {
             throw 'expected type ' + expectedType + ' for arg ' + argNameArr[i] + ', but got arg of type ' + gotType;
         }
@@ -57,7 +57,7 @@ var checkArgs = function (typeArr, argNameArr, args) {
 
 var ClassBuilder = function (className) {
     try {
-        checkArgs(['string'], ['fieldName'], arguments);
+        checkArgs(['string'], ['className'], arguments);
     } catch (e) {
         throw '[ClassBuilder][constructor]' + e;
     }
