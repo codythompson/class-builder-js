@@ -71,6 +71,8 @@ ClassBuilder.new = function (className) {
         // do something with args if you need to
     };
 };
+// TODO add a requiredField function 
+// and a fieldWithDefault function
 ClassBuilder.field = function (fieldName) {
     try {
         checkArgs(['string'], ['fieldName'], arguments);
