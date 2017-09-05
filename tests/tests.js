@@ -7,6 +7,12 @@ var assert = function (expression, errorMessage) {
         throw errorMessage;
     }
 };
+var assertExists = function (expression, errorMessage) {
+    assert(typeof expression !== 'undefined' && expression !== null, errorMessage);
+};
+var assertNotExists = function (expression, errorMessage) {
+    assert(typeof expression === 'undefined' || expression === null, errorMessage);
+};
 
 var runTests = function (testSuite) {
     var results = [];
@@ -69,6 +75,9 @@ renderResults = function (results, parentEl) {
     parentEl.appendChild(contDiv);
 };
 
+/*
+ * begin test suite
+ */
 var testSuite = {
     "ClassBuilder field function": function () {
         var cb = new ClassBuilder('C');
@@ -86,8 +95,28 @@ var testSuite = {
         assert(c.test1, 'field test1 not defined');
         assert(c.test2, 'field test2 not defined');
         assert(c.test3, 'field test3 not defined');
+    },
+
+    "ClassBuilder default function": function () {
+        var cb = new ClassBuilder('C');
+        cb.default('test1', true);
+        cb.default('test3', false);
+        cb.field('test2');
+        cb.field('test3');
+
+        var C = cb.build();
+        var c = new C({
+            test2: true,
+            test3: true,
+        });
+
+        assertNotExists(c.test1, 'field test1 should not exist');
+        assert(c.test3, 'field test3 not defined');
     }
 };
+/*
+ * end test suite
+ */
 
 var runAndRender = function () {
     var results = runTests(testSuite);

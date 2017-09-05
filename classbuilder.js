@@ -4,7 +4,7 @@
 (function (scope) {
 
 var existsCheck = function (val) {
-    return typeof val === 'undefined' || val === null;
+    return typeof val !== 'undefined' && val !== null;
 };
 
 var clone = function (obj) {
@@ -88,7 +88,7 @@ ClassBuilder.prototype.require = function (argName) {
 
     this.required.push(argName);
 };
-ClassBuilder.prototype.defualt = function (argName, argVal) {
+ClassBuilder.prototype.default = function (argName, argVal) {
     try {
         checkArgs(['string', null], ['argName', 'argVal'], arguments);
     } catch (e) {
