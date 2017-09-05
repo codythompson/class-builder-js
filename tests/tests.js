@@ -159,6 +159,11 @@ var testSuite = {
         var expErr = '[C][constructor] test3 is a required argument.';
         assertError(funcB, expErr, 'Expceted the constructor to throw ' + expErr);
     }
+
+    // TODO
+    // test what happens when the field, default, and required functions aren't called correctly
+    // test what happens when you set classBuilder.fields, .defaults, or .required explicitly
+    // maybe test a bunch of different types passed into args
 };
 /*
  * end test suite
