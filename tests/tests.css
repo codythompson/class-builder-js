@@ -1,0 +1,29 @@
+.test-suite-container {
+    font-family: sans-serif;
+}
+
+.test-suite-container .failed {
+    background-color: #fcc;
+    color: #600;
+}
+
+.test-suite-container .passed {
+    background-color: #cfc;
+    color: #060;
+}
+
+.test-result-container {
+    border: 1px solid;
+}
+
+.test-result-container div {
+    padding: 8px;
+}
+
+.test-title {
+    font-size: 1.1em;
+}
+.test-message {
+    border-top: 1px solid;
+    background-color: #fee;
+}

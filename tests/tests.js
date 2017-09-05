@@ -2,16 +2,96 @@
  * Some simple tests and framework 
  */
 
-var Assertion = function (expression, errorMessage) {
+var assert = function (expression, errorMessage) {
     if (!expression) {
         throw errorMessage;
     }
 };
 
 var runTests = function (testSuite) {
+    var results = [];
     for (var testName in testSuite) {
-        // TODO run the tests
+        var resultObj = {
+            name: testName,
+            errorMessage: null
+        };
+        var testObj = testSuite[testName];
+        if (typeof testObj === 'function') {
+            try {
+                testObj();
+            } catch (e) {
+                resultObj.errorMessage = e;
+            }
+        } else {
+            throw 'can\'t run test ' + testName;
+        }
+        results.push(resultObj);
+    }
+    return results;
+};
+
+renderResults = function (results, parentEl) {
+    var contDiv = document.createElement('div');
+    contDiv.className = 'test-suite-container';
+
+    for (var i = 0; i < results.length; i ++) {
+        var result = results[i];
+        var resDiv = document.createElement('div');
+        resDiv.className = 'test-result-container ';
+        var resClass = 'passed'
+        var resText = ' - passed';
+        if (result.errorMessage) {
+            resClass = 'failed'
+            resText = ' - failed'
+        }
+        resDiv.className += resClass;
+
+        var titleDiv = document.createElement('div')
+        titleDiv.className = 'test-title';
+        var titleSpan = document.createElement('span');
+        titleSpan.innerHTML = result.name;
+        var resultSpan = document.createElement('span');
+        resultSpan.innerHTML = resText;
+        titleDiv.appendChild(titleSpan);
+        titleDiv.appendChild(resultSpan);
+        resDiv.appendChild(titleDiv);
+
+        if (result.errorMessage) {
+            var messageDiv = document.createElement('div');
+            messageDiv.className = 'test-message';
+            messageDiv.innerHTML = result.errorMessage;
+        }
+        resDiv.appendChild(messageDiv);
+
+        contDiv.appendChild(resDiv);
+    }
+
+    parentEl.appendChild(contDiv);
+};
+
+var testSuite = {
+    "ClassBuilder field function": function () {
+        var cb = new ClassBuilder('CB');
+        cb.field('test1');
+        cb.field('test2');
+        cb.field('test3');
+
+        var C = cb.build();
+        var c = new C({
+            test1: true,
+            test2: true,
+            test3: true
+        });
+
+        assert(c.test1, 'field test1 not defined');
+        assert(c.test2, 'field test2 not defined');
+        assert(c.test3, 'field test3 not defined');
     }
 };
 
-// TODO make the tests
+var runAndRender = function () {
+    var results = runTests(testSuite);
+    renderResults(results, document.body);
+};
+
+window.addEventListener('load', runAndRender);

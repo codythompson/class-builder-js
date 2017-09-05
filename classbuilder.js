@@ -132,4 +132,10 @@ ClassBuilder.prototype.build = function () {
     };
 };
 
+if (scope.module && scope.module.exports) {
+    scope.module.exports = ClassBuilder;
+} else {
+    scope.ClassBuilder = ClassBuilder;
+}
+
 })(this);
