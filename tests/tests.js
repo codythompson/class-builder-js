@@ -13,6 +13,27 @@ var assertExists = function (expression, errorMessage) {
 var assertNotExists = function (expression, errorMessage) {
     assert(typeof expression === 'undefined' || expression === null, errorMessage);
 };
+var assertError = function (func, errThrown, errorMessage) {
+    var no_err = false;
+    try {
+        func();
+        no_err = true;
+    } catch (e) {
+        assert(e === errThrown, errorMessage);
+    }
+    assert(no_err === false, errorMessage);
+};
+var assertNoError = function (func, errorMessage) {
+    var no_err = true;
+    var err = null;
+    try {
+        func();
+    } catch (e) {
+        no_err = false;
+        err = e;
+    }
+    assert(no_err, errorMessage + '\n' + err);
+};
 
 var runTests = function (testSuite) {
     var results = [];
@@ -112,6 +133,31 @@ var testSuite = {
 
         assertNotExists(c.test1, 'field test1 should not exist');
         assert(c.test3, 'field test3 not defined');
+    },
+    "ClassBuilder required function": function () {
+        var cb = new ClassBuilder('C');
+        cb.default('test1', 0);
+        cb.require('test1');
+        cb.require('test2');
+        cb.require('test3');
+
+        var C = cb.build();
+
+        var funcA = function () {
+            var c = new C({
+                test2: '',
+                test3: 0
+            });
+        };
+        assertNoError(funcA, 'No error should be thrown, all required args provided.');
+
+        var funcB = function () {
+            var c = new C({
+                test2: ''
+            });
+        };
+        var expErr = '[C][constructor] test3 is a required argument.';
+        assertError(funcB, expErr, 'Expceted the constructor to throw ' + expErr);
     }
 };
 /*
