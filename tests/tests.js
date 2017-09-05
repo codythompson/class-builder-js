@@ -60,8 +60,8 @@ renderResults = function (results, parentEl) {
             var messageDiv = document.createElement('div');
             messageDiv.className = 'test-message';
             messageDiv.innerHTML = result.errorMessage;
+            resDiv.appendChild(messageDiv);
         }
-        resDiv.appendChild(messageDiv);
 
         contDiv.appendChild(resDiv);
     }
@@ -71,7 +71,7 @@ renderResults = function (results, parentEl) {
 
 var testSuite = {
     "ClassBuilder field function": function () {
-        var cb = new ClassBuilder('CB');
+        var cb = new ClassBuilder('C');
         cb.field('test1');
         cb.field('test2');
         cb.field('test3');
