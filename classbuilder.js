@@ -55,7 +55,8 @@ var checkArgs = function (typeArr, argNameArr, args) {
 //     }
 // };
 
-var ClassBuilder = function (className) {
+var ClassBuilder = {};
+ClassBuilder.new = function (className) {
     try {
         checkArgs(['string'], ['className'], arguments);
     } catch (e) {
@@ -70,7 +71,7 @@ var ClassBuilder = function (className) {
         // do something with args if you need to
     };
 };
-ClassBuilder.prototype.field = function (fieldName) {
+ClassBuilder.field = function (fieldName) {
     try {
         checkArgs(['string'], ['fieldName'], arguments);
     } catch (e) {
@@ -79,7 +80,7 @@ ClassBuilder.prototype.field = function (fieldName) {
 
     this.fields.push(fieldName);
 };
-ClassBuilder.prototype.require = function (argName) {
+ClassBuilder.require = function (argName) {
     try {
         checkArgs(['string'], ['argName'], arguments);
     } catch (e) {
@@ -88,7 +89,7 @@ ClassBuilder.prototype.require = function (argName) {
 
     this.required.push(argName);
 };
-ClassBuilder.prototype.default = function (argName, argVal) {
+ClassBuilder.default = function (argName, argVal) {
     try {
         checkArgs(['string', null], ['argName', 'argVal'], arguments);
     } catch (e) {
@@ -97,7 +98,7 @@ ClassBuilder.prototype.default = function (argName, argVal) {
 
     this.defaults[argName] = argVal;
 };
-ClassBuilder.prototype.setInit = function (initFunc) {
+ClassBuilder.setInit = function (initFunc) {
     try {
         checkArgs(['function'], ['initFunc'], arguments);
     } catch (e) {
@@ -106,7 +107,7 @@ ClassBuilder.prototype.setInit = function (initFunc) {
 
     this.defaults[argName] = argVal;
 };
-ClassBuilder.prototype.build = function () {
+ClassBuilder.build = function () {
     var className = this.className;
     var fields = this.fields;
     var required = this.required;
