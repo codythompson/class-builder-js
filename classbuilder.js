@@ -133,12 +133,9 @@ ClassBuilder.prototype.build = function () {
 };
 
 if (typeof module !== 'undefined' && module.exports) {
-    console.log('module style');
     module.exports = ClassBuilder;
 } else {
     scope.ClassBuilder = ClassBuilder;
-    console.log('global style');
 }
 
 })(this);
-    console.log('like wowzers');
