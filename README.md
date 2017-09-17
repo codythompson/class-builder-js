@@ -14,6 +14,8 @@ ClassBuilder.new('MyAwesomeClass');
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
+
+// returns a constructor function AKA a class
 var MyAwesomeClass = ClassBuilder.build();
 ```
 
@@ -21,14 +23,17 @@ var MyAwesomeClass = ClassBuilder.build();
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
+
+// will add a field called 'my_field' to the class
 ClassBuilder.field('my_field');
+
 var MyAwesomeClass = ClassBuilder.build();
 
 var myAwesomeInstance = new MyAwesomeClass({
     some_val: 'blah',
     my_field: 'rad',
 });
-console.log(myAwesomeInstance); // should print 'rad'
+console.log(myAwesomeInstance.my_field); // should print 'rad'
 ```
 
 4. To define your constructor, simply set ClassBuilder.init.
@@ -36,9 +41,13 @@ console.log(myAwesomeInstance); // should print 'rad'
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
 ClassBuilder.field('my_field');
+
+// will be called everytime somebody makes a new instance of your class.
+// will be passed the args object
 ClassBuilder.init = function (args) {
     console.log(args.some_val);
 };
+
 var MyAwesomeClass = ClassBuilder.build();
 
 var myAwesomeInstance = new MyAwesomeClass({
@@ -52,7 +61,11 @@ var myAwesomeInstance = new MyAwesomeClass({
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
 ClassBuilder.field('my_field');
+
+// will set args.some_val equal to 'defaults_rule' unless 'some_val' already
+// exists in the args object
 ClassBuilder.default('some_val', 'defaults_rule');
+
 ClassBuilder.init = function (args) {
     console.log(args.some_val);
 };
@@ -67,13 +80,17 @@ var myOtherInstance = new MyAwesomeClass({
 }); // prints out 'tubular'
 ```
 
-6. Want to insist that certain values be provided? You can do that too.
+6. Want to insist that certain values be provided? You can do that too with the require function.
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
 ClassBuilder.field('my_field');
 ClassBuilder.default('some_val', 'defaults_rule');
+
+// will make it so an error is thrown if 'my_field' isn't a key on the args
+// object
 ClassBuilder.require('my_field');
+
 ClassBuilder.init = function (args) {
     console.log(args.some_val);
 };
