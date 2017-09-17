@@ -19,7 +19,9 @@ ClassBuilder.new('MyAwesomeClass');
 var MyAwesomeClass = ClassBuilder.build();
 ```
 
-3. Set some fields using the field function. When you set a field, ClassBuilder will look at the args object passed into the constructor, and set fields (aka instance variables) on your object with values found in the args object.
+### fields
+
+ Set some fields using the field function. When you set a field, ClassBuilder will look at the args object passed into the constructor, and set fields (aka instance variables) on your object with values found in the args object.
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
@@ -36,7 +38,9 @@ var myAwesomeInstance = new MyAwesomeClass({
 console.log(myAwesomeInstance.my_field); // should print 'rad'
 ```
 
-4. To define your constructor, simply set ClassBuilder.init.
+### constructor/init functions
+
+To define your constructor, simply set ClassBuilder.init.
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
@@ -56,7 +60,9 @@ var myAwesomeInstance = new MyAwesomeClass({
 }); // prints out 'blah'
 ```
 
-5. You can even set default values using the default function.
+### default arg values
+
+You can even set default values using the default function.
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
@@ -80,7 +86,9 @@ var myOtherInstance = new MyAwesomeClass({
 }); // prints out 'tubular'
 ```
 
-6. Want to insist that certain values be provided? You can do that too with the require function.
+### required args
+
+Want to insist that certain values be provided? You can do that too with the require function.
 
 ```javascript
 ClassBuilder.new('MyAwesomeClass');
@@ -95,6 +103,67 @@ ClassBuilder.init = function (args) {
     console.log(args.some_val);
 };
 var MyAwesomeClass = ClassBuilder.build();
+
+var myAwesomeInstance = new MyAwesomeClass({
+    some_val: 'whaaat',
+}); // throws an error!
+var myOtherInstance = new MyAwesomeClass({
+    my_field: 'gettin right with my interpreter',
+}); // doesn't throw an error!
+```
+
+### use with existing constructor function<a name="h3existing"></a>
+
+Want to use this with an existing constructor function? Just use the [call](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call) function that all javascript functions have.
+
+```javascript
+ClassBuilder.new('MyAwesomeClass');
+ClassBuilder.field('my_field');
+ClassBuilder.default('some_val', 'defaults_rule');
+ClassBuilder.require('my_field');
+ClassBuilder.init = function (args) {
+    console.log(args.some_val);
+};
+
+// use this function in your own constructor with the js call
+// function
+var init_function = ClassBuilder.build();
+
+var MyAwesomeClass = function (args) {
+    init_function.call(this, args);
+};
+
+var myAwesomeInstance = new MyAwesomeClass({
+    some_val: 'whaaat',
+}); // throws an error!
+var myOtherInstance = new MyAwesomeClass({
+    my_field: 'gettin right with my interpreter',
+}); // doesn't throw an error!
+
+```
+
+### use with es6 class constructor
+
+You can use the same technique outlined in the [section above](#h3existing) for es6 class constructors 
+
+```javascript
+ClassBuilder.new('MyAwesomeClass');
+ClassBuilder.field('my_field');
+ClassBuilder.default('some_val', 'defaults_rule');
+ClassBuilder.require('my_field');
+ClassBuilder.init = function (args) {
+    console.log(args.some_val);
+};
+
+// use this function in your own constructor with the js call
+// function
+var init_function = ClassBuilder.build();
+
+class MyAwesomeClass {
+  constructor (args) {
+    init_function.call(this, args);
+  }
+}
 
 var myAwesomeInstance = new MyAwesomeClass({
     some_val: 'whaaat',
