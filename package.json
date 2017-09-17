@@ -1,5 +1,5 @@
 {
-  "name": "class-builder-js",
+  "name": "class-builder",
   "version": "1.1.0",
   "description": "A tool for defining class functions in JS. It assumes that all of your classes constructors will either take in no arguments, or a single argument that is a simple object. You specify default values, required values, and which values you would like added as instance variables.",
   "main": "classbuilder.js",
