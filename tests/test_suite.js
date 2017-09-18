@@ -89,6 +89,18 @@ var testSuite = {
         var C = cb.build();
         c = new C();
     },
+    "ClassBuilder access prototype from init": function () {
+        var cb = ClassBuilder;
+        cb.new('C');
+        cb.field('test1');
+        cb.default('test1', 'woot');
+        cb.setInit(function (args) {
+            assert(typeof this.testFunc === 'function', 'Expected testFunc be a function but instead is ' + typeof this.testFunc);;
+        });
+        var C = cb.build();
+        C.prototype.testFunc = function () {};
+        c = new C();
+    },
 
     /*
      * The following mirror the tests above,
@@ -197,6 +209,21 @@ var testSuite = {
             init.call(this, args);
         };
 
+        c = new C();
+    },
+    "ClassBuilder access prototype from init with existing class": function () {
+        var cb = ClassBuilder;
+        cb.new('C');
+        cb.field('test1');
+        cb.default('test1', 'woot');
+        cb.setInit(function (args) {
+            assert(typeof this.testFunc === 'function', 'Expected testFunc be a function but instead is ' + typeof this.testFunc);;
+        });
+        var init = cb.build();
+        var C = function (args) {
+            init.call(this, args);
+        };
+        C.prototype.testFunc = function () {};
         c = new C();
     },
 };
