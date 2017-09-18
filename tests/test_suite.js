@@ -67,10 +67,31 @@ var testSuite = {
         var expErr = '[C][constructor] test3 is a required argument.';
         assertError(funcB, expErr, 'Expceted the constructor to throw ' + expErr);
     },
-
+    "ClassBuilder init scope": function () {
+        var cb = ClassBuilder;
+        cb.new('C');
+        cb.field('test1');
+        cb.default('test1', 'woot');
+        cb.init = function (args) {
+            assert(this.test1 === 'woot', 'Expected test1 to be "woot" instead got ' + this.test1);;
+        }
+        var C = cb.build();
+        c = new C();
+    },
+    "ClassBuilder init scope using setInit": function () {
+        var cb = ClassBuilder;
+        cb.new('C');
+        cb.field('test1');
+        cb.default('test1', 'woot');
+        cb.setInit(function (args) {
+            assert(this.test1 === 'woot', 'Expected test1 to be "woot" instead got ' + this.test1);;
+        });
+        var C = cb.build();
+        c = new C();
+    },
 
     /*
-     * The followin mirror the tests above,
+     * The following mirror the tests above,
      * but test for the case where used with
      * an existing object
      */
@@ -145,5 +166,37 @@ var testSuite = {
         };
         var expErr = '[C][constructor] test3 is a required argument.';
         assertError(funcB, expErr, 'Expceted the constructor to throw ' + expErr);
-    }
+    },
+    "ClassBuilder init scope with existing class": function () {
+        var cb = ClassBuilder;
+        cb.new('C');
+        cb.field('test1');
+        cb.default('test1', 'woot');
+        cb.init = function (args) {
+            assert(this.test1 === 'woot', 'Expected test1 to be "woot" instead got ' + this.test1);;
+        };
+        var init = cb.build();
+
+        var C = function (args) {
+            init.call(this, args);
+        };
+        var C = cb.build();
+        c = new C();
+    },
+    "ClassBuilder init scope using setInit with existing class": function () {
+        var cb = ClassBuilder;
+        cb.new('C');
+        cb.field('test1');
+        cb.default('test1', 'woot');
+        cb.setInit(function (args) {
+            assert(this.test1 === 'woot', 'Expected test1 to be "woot" instead got ' + this.test1);;
+        });
+        var init = cb.build();
+
+        var C = function (args) {
+            init.call(this, args);
+        };
+
+        c = new C();
+    },
 };

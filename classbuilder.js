@@ -107,7 +107,7 @@ ClassBuilder.setInit = function (initFunc) {
         throw '[ClassBuilder][setInit]' + e;
     }
 
-    this.defaults[argName] = argVal;
+    this.init = initFunc;
 };
 ClassBuilder.build = function () {
     var className = this.className;
@@ -131,7 +131,7 @@ ClassBuilder.build = function () {
             this[fieldName] = args[fieldName];
         }
 
-        init(args);
+        init.call(this, args);
     };
 };
 
